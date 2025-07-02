@@ -21,6 +21,8 @@ function createGameBoard(){
         return false
     }
     return {board, checkStatus};
+    // TODO restart function 
+    // use IIFE
 }
 
 function createPlayer(name, symbol, game){
