@@ -1,3 +1,30 @@
 html{
     background-color: palegoldenrod;
 }
+body{
+    display:grid;
+    justify-content: center;
+    text-align: center;
+    gap:36px;
+}
+#board{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    border:1px solid black;
+}
+.cell{
+    border:1px solid black;
+    font-size:36px;
+    display:grid;
+    align-items: center;
+    text-align: center;
+    width: 3em;
+    height: 3em;
+}
+
+.title{
+    margin:0;
+    font-weight: bold;
+    font-size: 48px;
+}
