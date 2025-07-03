@@ -1,19 +1,19 @@
 function createPlayer(symbol, game){
-    function logTurn(attempt, row, col){
-        console.log(`Attempt ${attempt}: ${symbol} at row ${row} column ${col}`)
+    function logTurn(validAttempt, row, col){
+        console.log(`Attempt ${validAttempt}: ${symbol} at row ${row} column ${col}`)
         game.showBoard()
     }
     function takeTurn([row,col]){
         board = game.board;
-        attempt = true;
+        validAttempt = true;
         if (board[row][col] === ' '){
             board[row][col] = symbol;
         }
         else{
-            attempt = false;
+            validAttempt = false;
         }
-        logTurn(attempt, row, col)
-        return attempt;
+        logTurn(validAttempt, row, col)
+        return validAttempt;
     }
     return {symbol, takeTurn}
 }
@@ -101,7 +101,6 @@ const game = (function (){
 
                     winStatus = game.checkStatus();
                     if (!!winStatus){
-                        gameRun = false;
                         if (winStatus == "draw"){
                             domGameStatus.textContent = "Draw, noone wins"
                             console.log("Draw")
