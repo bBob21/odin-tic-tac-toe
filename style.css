@@ -1,10 +1,12 @@
 html{
     background-color: palegoldenrod;
 }
+
 body{
+    padding-top:60px;
     display:grid;
     justify-items: center;
-    gap:36px;
+    gap:24px;
 }
 #board{
     display:grid;
@@ -31,4 +33,8 @@ body{
 .resetBtn{
     padding:12px 24px;
     width: min-content;
+}
+
+.winningCell{
+    background-color: lightgreen;
 }

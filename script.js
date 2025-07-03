@@ -28,22 +28,33 @@ const game = (function (){
         }
         console.log(board)
     }
+    function setWinColor(coordinates){
+        console.log(coordinates)
+        for (let coord of coordinates){
+            let winningCell = document.querySelector(`[data-row="${coord[0]}"][data-col="${coord[1]}"]`)
+            winningCell.classList.add("winningCell");
+        }
+    }
     function checkStatus(){
         // TODO fix this ugly af
         for (let r = 0; r < board.length; r++){
             if (board[r][0] === board[r][1] && board[r][1] === board[r][2] && board[r][2] !== ' '){
+                setWinColor([[r,0],[r,1],[r,2]])
                 return board[r][0];
             }
         }
         for (let c = 0; c < board[0].length; c++){
             if (board[0][c] === board[1][c] && board[1][c] === board[2][c] && board[2][c] !== ' '){
+                setWinColor([[0,c],[1,c],[2,c]])
                 return board[0][c];
             }
         }
         if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[2][2] !== ' '){
+            setWinColor([[0,0],[1,1],[2,2]])
             return board[1][1];
         }
         if (board[2][0] === board[1][1] && board[1][1] === board[0][2] && board[0][2] !== ' '){
+            setWinColor([[2,0],[1,1],[0,2]])
             return board[1][1]
         }
         if (!board.flat().includes(' ')){
