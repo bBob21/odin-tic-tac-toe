@@ -3,8 +3,7 @@ html{
 }
 body{
     display:grid;
-    justify-content: center;
-    text-align: center;
+    justify-items: center;
     gap:36px;
 }
 #board{
@@ -27,4 +26,9 @@ body{
     margin:0;
     font-weight: bold;
     font-size: 48px;
+}
+
+.resetBtn{
+    padding:12px 24px;
+    width: min-content;
 }
