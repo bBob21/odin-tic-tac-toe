@@ -71,10 +71,10 @@ const game = (function (){
     function renderBoard(){
         const domBoard = document.getElementById("board");
         domBoard.replaceChildren();
-        const domWinMessage = document.querySelector(".winMessage");
-        domWinMessage.textContent = "";
-
+        const domGameStatus = document.querySelector(".gameStatus");
         let currPlayer = 0;
+        domGameStatus.textContent = `${PLAYERS[currPlayer].symbol}'s turn`;
+
         for (let r = 0; r < ROWS; r++){
             for (let c = 0; c < COLUMNS; c++){
                 const cell = document.createElement("button")
@@ -86,10 +86,10 @@ const game = (function (){
                     console.log(`row ${cell.dataset.row}`);
                     console.log(`col ${cell.dataset.col}`);
                     
-                    let p = players[currPlayer]
+                    let p = PLAYERS[currPlayer]
                     let validTurn = p.takeTurn([cell.dataset.row, cell.dataset.col]) 
                     if (validTurn){
-                        cell.textContent = players[currPlayer].symbol;
+                        cell.textContent = PLAYERS[currPlayer].symbol;
                         if (currPlayer == 0){
                             currPlayer++;
                         }
@@ -97,15 +97,17 @@ const game = (function (){
                             currPlayer--;
                         }
                     }
+                    domGameStatus.textContent = `${PLAYERS[currPlayer].symbol}'s turn`;
+
                     winStatus = game.checkStatus();
                     if (!!winStatus){
                         gameRun = false;
                         if (winStatus == "draw"){
-                            domWinMessage.textContent = "Draw, noone wins"
+                            domGameStatus.textContent = "Draw, noone wins"
                             console.log("Draw")
                         }
                         else{
-                            domWinMessage.textContent = `${winStatus} wins`;
+                            domGameStatus.textContent = `${winStatus} wins`;
                             console.log(`${winStatus} wins`);
                         }
                         let cells = document.querySelectorAll(".cell");
@@ -129,7 +131,7 @@ domResetBtn.addEventListener("click", () => {
 })
 const player1 = createPlayer("X", game);
 const player2 = createPlayer("O", game);
-const players = [player1, player2]
+const PLAYERS = [player1, player2]
 
 const ROWS = 3;
 const COLUMNS = 3;
