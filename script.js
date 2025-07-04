@@ -28,8 +28,72 @@ class Player{
     }
 }
 
-const game = new (class Game{
+class GameLogic{
     constructor(){
+        this._currPlayer = 0;
+    }
+
+    get currPlayer(){
+        return this._currPlayer;
+    }
+
+    toggleCurrPlayer = () =>{
+        console.log("first",this.currPlayer)
+        this._currPlayer = this.currPlayer ? 0 : 1;
+        console.log("after",this.currPlayer)
+    }
+
+    renderBoard = () =>{
+        const domBoard = document.getElementById("board");
+        domBoard.replaceChildren();
+        const domGameStatus = document.querySelector(".gameStatus");
+        domGameStatus.textContent = `${PLAYERS[this.currPlayer].symbol}'s turn`;
+
+        for (let r = 0; r < ROWS; r++){
+            for (let c = 0; c < COLUMNS; c++){
+                const cell = document.createElement("button")
+                cell.classList.add("cell");
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+
+                cell.addEventListener("click",() =>{
+                    console.log(`row ${cell.dataset.row}`);
+                    console.log(`col ${cell.dataset.col}`);
+                    
+                    let p = PLAYERS[this.currPlayer]
+                    let validTurn = p.takeTurn([cell.dataset.row, cell.dataset.col]) 
+                    if (validTurn){
+                        cell.textContent = p.symbol;
+                        this.toggleCurrPlayer();
+                        p = PLAYERS[this.currPlayer]
+                    }
+                    domGameStatus.textContent = `${p.symbol}'s turn`;
+
+                    let winStatus = this.checkStatus();
+                    if (!!winStatus){
+                        if (winStatus == "draw"){
+                            domGameStatus.textContent = "Draw, noone wins"
+                            console.log("Draw")
+                        }
+                        else{
+                            domGameStatus.textContent = `${winStatus} wins`;
+                            console.log(`${winStatus} wins`);
+                        }
+                        let cells = document.querySelectorAll(".cell");
+                        cells.forEach(cell => {
+                            cell.disabled = true;
+                        })
+                    }
+                });
+                domBoard.appendChild(cell);
+            }
+        }
+    }
+}
+
+const game = new (class GameBoard extends GameLogic{
+    constructor(){
+        super();
         this.board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
     }
 
@@ -79,58 +143,6 @@ const game = new (class Game{
     showBoard = () => {
         for (let r = 0; r < this.board.length; r++){
             console.log(this.board[r]);
-        }
-    }
-
-    renderBoard = () =>{
-        const domBoard = document.getElementById("board");
-        domBoard.replaceChildren();
-        const domGameStatus = document.querySelector(".gameStatus");
-        let currPlayer = 0;
-        domGameStatus.textContent = `${PLAYERS[currPlayer].symbol}'s turn`;
-
-        for (let r = 0; r < ROWS; r++){
-            for (let c = 0; c < COLUMNS; c++){
-                const cell = document.createElement("button")
-                cell.classList.add("cell");
-                cell.dataset.row = r;
-                cell.dataset.col = c;
-
-                cell.addEventListener("click",() =>{
-                    console.log(`row ${cell.dataset.row}`);
-                    console.log(`col ${cell.dataset.col}`);
-                    
-                    let p = PLAYERS[currPlayer]
-                    let validTurn = p.takeTurn([cell.dataset.row, cell.dataset.col]) 
-                    if (validTurn){
-                        cell.textContent = PLAYERS[currPlayer].symbol;
-                        if (currPlayer == 0){
-                            currPlayer++;
-                        }
-                        else{
-                            currPlayer--;
-                        }
-                    }
-                    domGameStatus.textContent = `${PLAYERS[currPlayer].symbol}'s turn`;
-
-                    let winStatus = this.checkStatus();
-                    if (!!winStatus){
-                        if (winStatus == "draw"){
-                            domGameStatus.textContent = "Draw, noone wins"
-                            console.log("Draw")
-                        }
-                        else{
-                            domGameStatus.textContent = `${winStatus} wins`;
-                            console.log(`${winStatus} wins`);
-                        }
-                        let cells = document.querySelectorAll(".cell");
-                        cells.forEach(cell => {
-                            cell.disabled = true;
-                        })
-                    }
-                });
-                domBoard.appendChild(cell);
-            }
         }
     }
 });
